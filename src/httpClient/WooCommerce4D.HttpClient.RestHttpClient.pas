@@ -38,6 +38,7 @@ type
       function Body(Value : iEntity) : ihttpClient;
       function DataSet(Value : TDataSet) : ihttpClient;
       function Content : String;
+      function StatusCode: integer;
   end;
 
 implementation
@@ -245,6 +246,11 @@ begin
   FRestRequest.Params[0].Options := [poDoNotEncode];
 
   FRestRequest.Execute;
+end;
+
+function TRestHttpClient.StatusCode: integer;
+begin
+  Result := FRestResponse.StatusCode;
 end;
 
 end.

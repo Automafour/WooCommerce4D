@@ -19,6 +19,7 @@ type
     function Body(Value : iEntity) : ihttpClient;
     function DataSet(Value : TDataSet) : ihttpClient;
     function Content : String;
+    function StatusCode: integer;
   end;
 
   iWooCommerce = interface
@@ -33,6 +34,7 @@ type
     function Body(Value : iEntity) : iWooCommerce;
     function DataSet(Value : TDataSet) : iWooCommerce;
     function Content : String;
+    function StatusCode: integer;
   end;
 
 implementation

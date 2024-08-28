@@ -41,6 +41,7 @@ type
     function Body(Value: iEntity): iWooCommerce;
     function DataSet(Value: TDataSet): iWooCommerce;
     function Content: String;
+    function StatusCode: integer;
   end;
 
 implementation
@@ -113,6 +114,11 @@ function TWooCommerceAPI.Params(aKey: String; aValue: String): iWooCommerce;
 begin
   Result := Self;
   FHttpClient.Params(aKey, aValue);
+end;
+
+function TWooCommerceAPI.StatusCode: integer;
+begin
+  result := FHttpClient.StatusCode;
 end;
 
 function TWooCommerceAPI.Batch(endpointBase: TEndpointBaseType): iWooCommerce;
