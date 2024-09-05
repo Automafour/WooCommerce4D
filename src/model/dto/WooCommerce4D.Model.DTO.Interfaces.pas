@@ -250,7 +250,8 @@ type
     function Position(Value : integer) : iModelAttributesDTO<T>;
     function Visible(Value : Boolean = false) : iModelAttributesDTO<T>;
     function Variation(Value : Boolean = false) : iModelAttributesDTO<T>;
-    function Options(Value : String) : iModelAttributesDTO<T>;
+    function Options(Value : TArray<string>) : iModelAttributesDTO<T>;
+    function Next : iModelAttributesDTO<T>;
     function &End : T;
   end;
 

@@ -54,7 +54,7 @@ implementation
 
 function TModelProductVariationDTO.Attributes: iModelAttributesDTO<iModelProductVariationDTO>;
 begin
-  Result := TModelAttributesDTO<iModelProductVariationDTO>.New(Self);
+  Result := TModelAttributesDTO<iModelProductVariationDTO>.New(Self, FJSON);
 end;
 
 function TModelProductVariationDTO.BackOrders(

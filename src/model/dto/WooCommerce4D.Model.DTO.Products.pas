@@ -78,7 +78,7 @@ implementation
 
 function TModelProductDTO.Attributes: iModelAttributesDTO<iModelProductDTO>;
 begin
-  Result := TModelAttributesDTO<iModelProductDTO>.New(Self);
+  Result := TModelAttributesDTO<iModelProductDTO>.New(Self, FJSON);
 end;
 
 function TModelProductDTO.BackOrders(Value: TStatusType): iModelProductDTO;
