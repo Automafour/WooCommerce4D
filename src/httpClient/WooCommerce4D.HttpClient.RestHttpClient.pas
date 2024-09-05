@@ -80,7 +80,11 @@ end;
 
 destructor TRestHttpClient.Destroy;
 begin
-
+  FListaParams.Free;
+  FRestRequest.Free;
+  FRestResponse.Free;
+  FRestClient.Free;
+  FAuthenticator.Free;
   inherited;
 end;
 
