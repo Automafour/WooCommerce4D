@@ -25,10 +25,14 @@ type
   iWooCommerce = interface
     function _Create(endpointBase : TEndpointBaseType) : iWooCommerce; overload;
     function _Create(endpointBase : String) : iWooCommerce; overload;
-    function Get(endpointBase : TEndpointBaseType; Id : Integer) : iWooCommerce;
-    function GetAll(endpointBase : TEndpointBaseType) : iWooCommerce;
-    function Update(endpointBase : TEndpointBaseType; Id : Integer) : iWooCommerce;
-    function Delete(endpointBase : TEndpointBaseType; Id : Integer) : iWooCommerce;
+    function Get(endpointBase: TEndpointBaseType; Id: Integer): iWooCommerce; Overload;
+    function Get(endpointBase: string; Id: Integer): iWooCommerce; Overload;
+    function GetAll(endpointBase: TEndpointBaseType): iWooCommerce; Overload;
+    function GetAll(endpointBase: string): iWooCommerce; Overload;
+    function Update(endpointBase: TEndpointBaseType; Id: Integer): iWooCommerce; Overload;
+    function Update(endpointBase: string; Id: Integer): iWooCommerce; Overload;
+    function Delete(endpointBase: TEndpointBaseType; Id: Integer): iWooCommerce; Overload;
+    function Delete(endpointBase: string; Id: Integer): iWooCommerce; Overload;
     function Batch(endpointBase : TEndpointBaseType) : iWooCommerce;
     function Params(aKey: String; aValue : String) : iWooCommerce;
     function Body(Value : iEntity) : iWooCommerce;

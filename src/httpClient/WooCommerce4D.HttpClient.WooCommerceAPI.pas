@@ -32,10 +32,14 @@ type
     class function New(Parent: iOAuthConfig): iWooCommerce;
     function _Create(endpointBase: TEndpointBaseType): iWooCommerce; overload;
     function _Create(endpointBase: String): iWooCommerce; overload;
-    function Get(endpointBase: TEndpointBaseType; Id: Integer): iWooCommerce;
-    function GetAll(endpointBase: TEndpointBaseType): iWooCommerce;
-    function Update(endpointBase: TEndpointBaseType; Id: Integer): iWooCommerce;
-    function Delete(endpointBase: TEndpointBaseType; Id: Integer): iWooCommerce;
+    function Get(endpointBase: TEndpointBaseType; Id: Integer): iWooCommerce; Overload;
+    function Get(endpointBase: string; Id: Integer): iWooCommerce; Overload;
+    function GetAll(endpointBase: TEndpointBaseType): iWooCommerce; Overload;
+    function GetAll(endpointBase: string): iWooCommerce; Overload;
+    function Update(endpointBase: TEndpointBaseType; Id: Integer): iWooCommerce; Overload;
+    function Update(endpointBase: string; Id: Integer): iWooCommerce; Overload;
+    function Delete(endpointBase: TEndpointBaseType; Id: Integer): iWooCommerce; Overload;
+    function Delete(endpointBase: string; Id: Integer): iWooCommerce; Overload;
     function Batch(endpointBase: TEndpointBaseType): iWooCommerce;
     function Params(aKey: String; aValue: String): iWooCommerce;
     function Body(Value: iEntity): iWooCommerce;
@@ -85,6 +89,14 @@ begin
     [FParent.Url, FParent.Version, endpointBase.GetValue, Id]));
 end;
 
+function TWooCommerceAPI.Delete(endpointBase: string;
+  Id: Integer): iWooCommerce;
+begin
+  Result := Self;
+  FHttpClient.Delete(Format(API_URL_ONE_ENTITY_FORMAT,
+    [FParent.Url, FParent.Version, endpointBase, Id]));
+end;
+
 destructor TWooCommerceAPI.Destroy;
 begin
   inherited;
@@ -96,6 +108,20 @@ begin
   Result := Self;
   FHttpClient.Get(Format(API_URL_ONE_ENTITY_FORMAT,
     [FParent.Url, FParent.Version, endpointBase.GetValue, Id]));
+end;
+
+function TWooCommerceAPI.Get(endpointBase: string; Id: Integer): iWooCommerce;
+begin
+  Result := Self;
+  FHttpClient.Get(Format(API_URL_ONE_ENTITY_FORMAT,
+    [FParent.Url, FParent.Version, endpointBase, Id]));
+end;
+
+function TWooCommerceAPI.GetAll(endpointBase: string): iWooCommerce;
+begin
+  Result := Self;
+  FHttpClient.GetAll(Format(API_URL_FORMAT, [FParent.Url, FParent.Version,
+    endpointBase]));
 end;
 
 function TWooCommerceAPI.GetAll(endpointBase: TEndpointBaseType): iWooCommerce;
@@ -121,6 +147,14 @@ begin
   result := FHttpClient.StatusCode;
 end;
 
+function TWooCommerceAPI.Update(endpointBase: string;
+  Id: Integer): iWooCommerce;
+begin
+  Result := Self;
+  FHttpClient.Put(Format(API_URL_ONE_ENTITY_FORMAT,
+    [FParent.Url, FParent.Version, endpointBase, Id]));
+end;
+
 function TWooCommerceAPI.Batch(endpointBase: TEndpointBaseType): iWooCommerce;
 begin
   Result := Self;
@@ -137,7 +171,6 @@ end;
 function TWooCommerceAPI._Create(endpointBase: String): iWooCommerce;
 begin
   Result := Self;
-
   FHttpClient.Post(Format(API_URL_FORMAT, [FParent.Url, FParent.Version,
     endpointBase]));
 end;
