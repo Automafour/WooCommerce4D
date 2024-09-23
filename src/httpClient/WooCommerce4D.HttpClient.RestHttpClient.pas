@@ -12,7 +12,8 @@ uses
   Data.Bind.ObjectScope,
   Data.DB,
   DataSet.Serialize,
-  System.Generics.Collections;
+  System.Generics.Collections,
+  SysUtils;
 
 type
   TRestHttpClient = class(TInterfacedObject, iHttpClient)
@@ -125,11 +126,20 @@ function TRestHttpClient.GetAll(Url: String): ihttpClient;
 var
   key : String;
   I : integer;
+  LParams: string;
 begin
   result := Self;
 
   for Key in FListaParams.Keys do
-    url := url + '?' + key + '=' + FListaParams.Items[key];
+  begin
+    if not LParams.isempty then
+    begin
+      LParams := Concat(LParams, '&');
+    end;
+    LParams := Concat(LParams,key + '=' + FListaParams.Items[key]);
+  end;
+  if not LParams.isempty then
+    url := url + '?' + LParams;
 
   FRestClient := TRESTClient.Create(Url);
   FRestClient.Accept :=
