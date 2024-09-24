@@ -46,6 +46,7 @@ type
     function DataSet(Value: TDataSet): iWooCommerce;
     function Content: String;
     function StatusCode: integer;
+    function TotalPaginas: integer;
   end;
 
 implementation
@@ -145,6 +146,11 @@ end;
 function TWooCommerceAPI.StatusCode: integer;
 begin
   result := FHttpClient.StatusCode;
+end;
+
+function TWooCommerceAPI.TotalPaginas: integer;
+begin
+  result := FHttpClient.TotalPaginas;
 end;
 
 function TWooCommerceAPI.Update(endpointBase: string;

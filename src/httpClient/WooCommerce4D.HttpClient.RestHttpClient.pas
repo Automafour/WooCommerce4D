@@ -41,6 +41,7 @@ type
       function DataSet(Value : TDataSet) : ihttpClient;
       function Content : String;
       function StatusCode: integer;
+      function TotalPaginas: integer;
   end;
 
 implementation
@@ -265,6 +266,19 @@ end;
 function TRestHttpClient.StatusCode: integer;
 begin
   Result := FRestResponse.StatusCode;
+end;
+
+function TRestHttpClient.TotalPaginas: integer;
+var
+  i: integer;
+  LHeader: string;
+begin
+  for I := 0 to Pred(FRestResponse.Headers.Count) do
+    if FRestResponse.Headers.KeyNames[i] = 'x-wp-totalpages' then
+    begin
+      Result := StrToIntDef(FRestResponse.Headers.ValueFromIndex[i],0);
+      Exit;
+    end;
 end;
 
 end.

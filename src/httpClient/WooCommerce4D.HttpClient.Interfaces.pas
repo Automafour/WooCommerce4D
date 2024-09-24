@@ -20,6 +20,7 @@ type
     function DataSet(Value : TDataSet) : ihttpClient;
     function Content : String;
     function StatusCode: integer;
+    function TotalPaginas: integer;
   end;
 
   iWooCommerce = interface
@@ -39,6 +40,7 @@ type
     function DataSet(Value : TDataSet) : iWooCommerce;
     function Content : String;
     function StatusCode: integer;
+    function TotalPaginas: integer;
   end;
 
 implementation
