@@ -13,10 +13,13 @@ type
       FConsumerKey : String;
       FConsumerSecret : String;
       FVersion : String;
+      FAuthType: TAuthType;
     public
       constructor Create;
       destructor Destroy; override;
       class function New : iOAuthConfig;
+      function AuthType(Value : TAuthType) : iOAuthConfig; overload;
+      function AuthType : TAuthType; overload;
       function Url(Value : String) : iOAuthConfig; overload;
       function Url : String; overload;
       function ConsumerKey(Value : String) : iOAuthConfig; overload;
@@ -34,6 +37,17 @@ function TOAuthConfig.ConsumerKey(Value: String): iOAuthConfig;
 begin
   Result := Self;
   FConsumerKey := Value;
+end;
+
+function TOAuthConfig.AuthType: TAuthType;
+begin
+  Result := FAuthType;
+end;
+
+function TOAuthConfig.AuthType(Value: TAuthType): iOAuthConfig;
+begin
+  Result := Self;
+  FAuthType := Value;
 end;
 
 function TOAuthConfig.ConsumerKey: String;
@@ -54,7 +68,7 @@ end;
 
 constructor TOAuthConfig.Create;
 begin
-
+  FAuthType := BASIC_AUTH;
 end;
 
 destructor TOAuthConfig.Destroy;

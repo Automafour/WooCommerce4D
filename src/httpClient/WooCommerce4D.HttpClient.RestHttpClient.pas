@@ -8,12 +8,13 @@ uses
   REST.Types,
   REST.Client,
   REST.Authenticator.Basic,
+  REST.Authenticator.OAuth,
   Data.Bind.Components,
   Data.Bind.ObjectScope,
   Data.DB,
   DataSet.Serialize,
   System.Generics.Collections,
-  SysUtils;
+  SysUtils, WooCommerce4D.Types;
 
 type
   TRestHttpClient = class(TInterfacedObject, iHttpClient)
@@ -21,7 +22,7 @@ type
       FRestClient: TRESTClient;
       FRestRequest: TRESTRequest;
       FRestResponse: TRESTResponse;
-      FAuthenticator : THTTPBasicAuthenticator;
+      FAuthenticator : TCustomAuthenticator;
 
       FListaParams : TDictionary<String,String>;
       FBody : String;
@@ -29,7 +30,7 @@ type
       constructor Create;
       destructor Destroy; override;
       class function New : iHttpClient;
-      function Authentication(aUserName, aPassword : String) : ihttpClient;
+      function Authentication(aAuthType: TAuthType; aUserName, aPassword : String) : ihttpClient;
       function Get(Url : String) : ihttpClient;
       function GetAll(Url : String) : ihttpClient;
       function Post(Url : String) : ihttpClient;
@@ -44,11 +45,21 @@ type
 
 implementation
 
-function TRestHttpClient.Authentication(aUserName,
-  aPassword: String): ihttpClient;
+function TRestHttpClient.Authentication(aAuthType: TAuthType; aUserName, aPassword : String) : ihttpClient;
+var
+  LSignatureMethod: TOAuth1SignatureMethod;
 begin
   Result := Self;
-  FAuthenticator := THTTPBasicAuthenticator.Create(aUserName, aPassword);
+  case aAuthType of
+    BASIC_AUTH:
+      FAuthenticator := THTTPBasicAuthenticator.Create(aUserName, aPassword);
+    OAUTH_1:
+      begin
+        FAuthenticator := TOAuth1Authenticator.Create(nil);
+        TOAuth1Authenticator(FAuthenticator).ConsumerKey := aUserName;
+        TOAuth1Authenticator(FAuthenticator).ConsumerSecret := aPassword;
+      end;
+  end;
 end;
 
 function TRestHttpClient.Body(Value: iEntity): ihttpClient;
@@ -126,21 +137,8 @@ function TRestHttpClient.GetAll(Url: String): ihttpClient;
 var
   key : String;
   I : integer;
-  LParams: string;
 begin
   result := Self;
-
-  for Key in FListaParams.Keys do
-  begin
-    if not LParams.isempty then
-    begin
-      LParams := Concat(LParams, '&');
-    end;
-    LParams := Concat(LParams,key + '=' + FListaParams.Items[key]);
-  end;
-  if not LParams.isempty then
-    url := url + '?' + LParams;
-
   FRestClient := TRESTClient.Create(Url);
   FRestClient.Accept :=
     'application/json, text/plain; q=0.9, text/html;q=0.8,';
@@ -167,6 +165,8 @@ begin
   FRestRequest.Method := rmGET;
   FRestRequest.SynchronizedEvents := False;
   FRestRequest.Response := FRestResponse;
+  for Key in FListaParams.Keys do
+    FRestRequest.Params.AddItem(key,FListaParams.Items[key]);
 
   FRestRequest.Execute;
 end;

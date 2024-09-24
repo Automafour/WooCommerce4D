@@ -9,7 +9,7 @@ uses
 
 type
   iHttpClient = interface
-    function Authentication(aUserName, aPassword : String) : ihttpClient;
+    function Authentication(aAuthType: TAuthType; aUserName, aPassword : String) : ihttpClient;
     function Get(Url : String) : ihttpClient;
     function GetAll(Url : String) : ihttpClient;
     function Post(Url : String) : ihttpClient;

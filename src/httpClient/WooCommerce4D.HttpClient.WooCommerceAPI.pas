@@ -54,7 +54,7 @@ constructor TWooCommerceAPI.Create(Parent: iOAuthConfig);
 begin
   FParent := Parent;
   FHttpClient := TRestHttpClient.New;
-  FHttpClient.Authentication(FParent.ConsumerKey, FParent.ConsumerSecret);
+  FHttpClient.Authentication(FParent.AuthType, FParent.ConsumerKey, FParent.ConsumerSecret);
 end;
 
 function TWooCommerceAPI.Body(Value: iEntity): iWooCommerce;

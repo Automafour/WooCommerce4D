@@ -7,6 +7,8 @@ uses
 
 type
   iOAuthConfig = interface
+    function AuthType(Value : TAuthType) : iOAuthConfig; overload;
+    function AuthType : TAuthType; overload;
     function Url(Value : String) : iOAuthConfig; overload;
     function Url : String; overload;
     function ConsumerKey(Value : String) : iOAuthConfig; overload;
