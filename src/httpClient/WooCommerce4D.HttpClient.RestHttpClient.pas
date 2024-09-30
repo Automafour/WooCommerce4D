@@ -273,6 +273,7 @@ var
   i: integer;
   LHeader: string;
 begin
+  Result := 1;
   for I := 0 to Pred(FRestResponse.Headers.Count) do
     if FRestResponse.Headers.KeyNames[i] = 'x-wp-totalpages' then
     begin
