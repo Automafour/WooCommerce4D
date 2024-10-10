@@ -41,6 +41,7 @@ type
     function DateOnSaleFromGMT(Value: TDateTime): iModelProductDTO;
     function DateOnSaleTo(Value: TDateTime): iModelProductDTO;
     function DateOnSaleToGMT(Value: TDateTime): iModelProductDTO;
+    function SalePrice(Value: string): iModelProductDTO;
     function _Virtual(Value: Boolean = false): iModelProductDTO;
     function Downloadable(Value: Boolean = false): iModelProductDTO;
     function Downlaods: iModelDownloasDTO<iModelProductDTO>;
@@ -270,6 +271,12 @@ function TModelProductDTO.ReviewsAllowed(Value: Boolean): iModelProductDTO;
 begin
   Result := Self;
   FJSON.AddPair('reviews_allowed', TJsonBool.Create(Value));
+end;
+
+function TModelProductDTO.SalePrice(Value: string): iModelProductDTO;
+begin
+  Result := Self;
+  FJSON.AddPair('sale_price', value);
 end;
 
 function TModelProductDTO.ShippingClass(Value: Boolean): iModelProductDTO;

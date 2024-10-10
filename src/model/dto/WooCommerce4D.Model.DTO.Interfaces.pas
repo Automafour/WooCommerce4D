@@ -177,6 +177,7 @@ type
     function DateOnSaleFromGMT(Value: TDateTime): iModelProductDTO;
     function DateOnSaleTo(Value: TDateTime): iModelProductDTO;
     function DateOnSaleToGMT(Value: TDateTime): iModelProductDTO;
+    function SalePrice(Value: string): iModelProductDTO;
     function _Virtual(Value: Boolean = false): iModelProductDTO;
     function Downloadable(Value: Boolean = false): iModelProductDTO;
     function Downlaods: iModelDownloasDTO<iModelProductDTO>;
