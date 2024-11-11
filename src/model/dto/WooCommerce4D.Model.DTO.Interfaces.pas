@@ -94,7 +94,8 @@ type
 
   iModelOrdersDTO = interface
     function ParentId(Value: Integer): iModelOrdersDTO;
-    function Status(Value: TStatusType = PENDING): iModelOrdersDTO; // Default pending
+    function Status(Value: TStatusType = PENDING): iModelOrdersDTO; Overload; // Default pending
+    function Status(Value: string): iModelOrdersDTO; Overload;// Default pending
     function Currency(Value: TOrderCurrency = USD): iModelOrdersDTO; // Default USD
     function CustomerId(Value: Integer): iModelOrdersDTO;
     function CustomerNote(Value: String): iModelOrdersDTO;
@@ -103,12 +104,13 @@ type
     function PaymentMethod(Value: String): iModelOrdersDTO;
     function PaymentMethodTitle(Value: String): iModelOrdersDTO;
     function TransactionId(Value: String): iModelOrdersDTO;
+    function CorreiosTrackingCode(Value: string): iModelOrdersDTO;
     function MetaData: iModelMetaDataDTO<iModelOrdersDTO>;
     function LineItems: iModelLinesItemsDTO<iModelOrdersDTO>;
     function ShippingLines: iModelShippingLinesDTO<iModelOrdersDTO>;
     function FreeLines: iModelFreeLinesDTO<iModelOrdersDTO>;
     function CouponLines: iModelCouponsLinesDTO<iModelOrdersDTO>;
-    function &End : iModelOrdersDTO;
+    function &End : iEntity;
   end;
 
   iModelLinesItemsDTO<T> = interface

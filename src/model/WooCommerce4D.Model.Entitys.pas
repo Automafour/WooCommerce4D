@@ -82,7 +82,7 @@ end;
 
 function TEntity.Orders: iModelOrdersDTO;
 begin
-  Result := TModelOrdersDTO.New;
+  Result := TModelOrdersDTO.New(Self);
 end;
 
 function TEntity.OrdersNote: iModelOrderNotesDTO;

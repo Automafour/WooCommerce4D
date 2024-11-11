@@ -17,13 +17,16 @@ uses
 type
   TModelOrdersDTO = class(TInterfacedObject, iModelOrdersDTO)
     private
+      [weak]
+      FParent : iEntity;
       FJson : TJSONObject;
     public
-      constructor Create;
+      constructor Create(Parent : iEntity);
       destructor Destroy; override;
-      class function New : iModelOrdersDTO;
+      class function New(Parent : iEntity): iModelOrdersDTO;
       function ParentId(Value: Integer): iModelOrdersDTO;
-      function Status(Value: TStatusType = PENDING): iModelOrdersDTO; // Default pending
+      function Status(Value: TStatusType = PENDING): iModelOrdersDTO; Overload; // Default pending
+      function Status(Value: string): iModelOrdersDTO; Overload;// Default pending
       function Currency(Value: TOrderCurrency = USD): iModelOrdersDTO; // Default USD
       function CustomerId(Value: Integer): iModelOrdersDTO;
       function CustomerNote(Value: String): iModelOrdersDTO;
@@ -32,12 +35,13 @@ type
       function PaymentMethod(Value: String): iModelOrdersDTO;
       function PaymentMethodTitle(Value: String): iModelOrdersDTO;
       function TransactionId(Value: String): iModelOrdersDTO;
+      function CorreiosTrackingCode(Value: string): iModelOrdersDTO;
       function MetaData: iModelMetaDataDTO<iModelOrdersDTO>;
       function LineItems: iModelLinesItemsDTO<iModelOrdersDTO>;
       function ShippingLines: iModelShippingLinesDTO<iModelOrdersDTO>;
       function FreeLines: iModelFreeLinesDTO<iModelOrdersDTO>;
       function CouponLines: iModelCouponsLinesDTO<iModelOrdersDTO>;
-      function &End : iModelOrdersDTO;
+      function &End : iEntity;
   end;
 
 implementation
@@ -47,19 +51,26 @@ begin
   Result := TModelBillingDTO<iModelOrdersDTO>.New(Self);
 end;
 
+function TModelOrdersDTO.CorreiosTrackingCode(Value: string): iModelOrdersDTO;
+begin
+  Result := Self;
+  FJson.AddPair('correios_tracking_code',Value);
+end;
+
 function TModelOrdersDTO.CouponLines: iModelCouponsLinesDTO<iModelOrdersDTO>;
 begin
   Result := TModelCouponsLines<iModelOrdersDTO>.New(Self);
 end;
 
-function TModelOrdersDTO.&End: iModelOrdersDTO;
+function TModelOrdersDTO.&End: iEntity;
 begin
-  Result := Self;
+  Result := FParent.Content(FJSON.ToJSON);
 end;
 
-constructor TModelOrdersDTO.Create;
+constructor TModelOrdersDTO.Create(Parent : iEntity);
 begin
   FJson := TJSONObject.Create;
+  FParent := Parent;
 end;
 
 function TModelOrdersDTO.Currency(Value: TOrderCurrency): iModelOrdersDTO;
@@ -101,9 +112,9 @@ begin
   Result := TModelMetaDataDTO<iModelOrdersDTO>.New(Self);
 end;
 
-class function TModelOrdersDTO.New : iModelOrdersDTO;
+class function TModelOrdersDTO.New (Parent : iEntity): iModelOrdersDTO;
 begin
-  Result := Self.Create;
+  Result := Self.Create(Parent);
 end;
 
 function TModelOrdersDTO.ParentId(Value: Integer): iModelOrdersDTO;
@@ -132,6 +143,12 @@ end;
 function TModelOrdersDTO.ShippingLines: iModelShippingLinesDTO<iModelOrdersDTO>;
 begin
   Result := TModelShippingLinesDTO<iModelOrdersDTO>.New(Self);
+end;
+
+function TModelOrdersDTO.Status(Value: string): iModelOrdersDTO;
+begin
+  Result := Self;
+  FJson.AddPair('status',Value);
 end;
 
 function TModelOrdersDTO.Status(Value: TStatusType): iModelOrdersDTO;
