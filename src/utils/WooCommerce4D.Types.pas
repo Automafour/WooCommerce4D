@@ -17,6 +17,8 @@ type
     SHIPPING_ZONES_METHODS, TAXES,
     TAXES_CLASSES, WEBHOOKS, TERMS, VARIATIONS);
 
+  TTieredPricingType = (FIXED, PERCENTAGE);
+
   TStatusType = (PENDING, PROCESSING, ONHOLD, COMPLETED, CANCELLED, REFUNDED,
       FAILED, TRASH, DRAFT, _PRIVATE, PUBLISH,SIMPLE, GROUPED, _EXTERNAL,
       VARIABLE, VISIBLE, CATALOG, SEARCH, HIDDEN, TAXABLE, SHIPPING, NONE,
@@ -43,6 +45,10 @@ type
 
   TOAuthHeaderHelper = record helper for TOAuthHeader
     function GetValue : String;
+  end;
+
+  TTieredPricingTypeHelper = record helper for TTieredPricingType
+    function GetValue: string;
   end;
 
   TOrderCurrencyHelper = record helper for TOrderCurrency
@@ -180,6 +186,18 @@ begin
     OAUTH_NONCE: Result := 'oauth_nonce';
     OAUTH_SIGNATURE_METHOD: Result := 'oauth_signature_method';
     OAUTH_SIGNATURE: Result := 'oauth_signature';
+  end;
+end;
+
+
+
+{ TTieredPricingTypeHelper }
+
+function TTieredPricingTypeHelper.GetValue: string;
+begin
+  case Self of
+    FIXED: Result := 'fixed';
+    PERCENTAGE: Result := 'percentage';
   end;
 end;
 

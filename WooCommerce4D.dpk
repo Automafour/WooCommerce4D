@@ -76,6 +76,7 @@ contains
   WooCommerce4D.Model.DTO.WebHooks in 'src\model\dto\WooCommerce4D.Model.DTO.WebHooks.pas',
   WooCommerce4D.HttpClient.Interfaces in 'src\httpClient\WooCommerce4D.HttpClient.Interfaces.pas',
   WooCommerce4D.HttpClient.RestHttpClient in 'src\httpClient\WooCommerce4D.HttpClient.RestHttpClient.pas',
-  WooCommerce4D.HttpClient.WooCommerceAPI in 'src\httpClient\WooCommerce4D.HttpClient.WooCommerceAPI.pas';
+  WooCommerce4D.HttpClient.WooCommerceAPI in 'src\httpClient\WooCommerce4D.HttpClient.WooCommerceAPI.pas',
+  WooCommerce4D.Model.DTO.Products.FixedTieredPricing in 'src\model\dto\WooCommerce4D.Model.DTO.Products.FixedTieredPricing.pas';
 
 end.

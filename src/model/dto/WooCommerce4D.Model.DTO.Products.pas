@@ -64,6 +64,8 @@ type
     function CrossSellIds(Value: String): iModelProductDTO; // array ids
     function ParentId(Value: Integer): iModelProductDTO;
     function PurchaseNote(Value: String): iModelProductDTO;
+    function TieredPricingType(Value: TTieredPricingType): iModelProductDTO;
+    function TieredPricingFixedRules: iModelFixedTieredPriceDTO<iModelProductDTO>;
     function Categories: iModelCategoriesDTO<iModelProductDTO>;
     function Tags: iModelTagsDTO<iModelProductDTO>;
     function Images: iModelImagesDTO<iModelProductDTO>;
@@ -76,6 +78,9 @@ type
   end;
 
 implementation
+
+uses
+  WooCommerce4D.Model.DTO.Products.FixedTieredPricing;
 
 function TModelProductDTO.Attributes: iModelAttributesDTO<iModelProductDTO>;
 begin
@@ -342,6 +347,18 @@ function TModelProductDTO.taxStatus(Value: TStatusType): iModelProductDTO;
 begin
   Result := Self;
   FJSON.AddPair('tax_status', Value.GetValue);
+end;
+
+function TModelProductDTO.TieredPricingFixedRules: iModelFixedTieredPriceDTO<iModelProductDTO>;
+begin
+  Result := TModelFixedTieredPriceDTO<iModelProductDTO>.New(Self, FJSON);
+end;
+
+function TModelProductDTO.TieredPricingType(
+  Value: TTieredPricingType): iModelProductDTO;
+begin
+  Result := Self;
+  FJSON.AddPair('tiered_pricing_type', Value.GetValue);
 end;
 
 function TModelProductDTO.UpsellIds(Value: String): iModelProductDTO;

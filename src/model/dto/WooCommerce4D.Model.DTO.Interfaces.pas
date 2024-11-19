@@ -164,6 +164,12 @@ type
     function &End: iModelRefundDTO;
   end;
 
+  iModelFixedTieredPriceDTO<T> = interface
+    function Rule(Quantity: Integer; Value: Currency)
+      : iModelFixedTieredPriceDTO<T>;
+    function &End: T;
+  end;
+
   iModelProductDTO = interface
     function Name(Value: String): iModelProductDTO;
     function Slug(Value: String): iModelProductDTO;
@@ -202,6 +208,8 @@ type
     function CrossSellIds(Value : String) : iModelProductDTO;//array ids
     function ParentId(Value : Integer) : iModelProductDTO;
     function PurchaseNote(Value : String) : iModelProductDTO;
+    function TieredPricingType(Value: TTieredPricingType): iModelProductDTO;
+    function TieredPricingFixedRules: iModelFixedTieredPriceDTO<iModelProductDTO>;
     function Categories : iModelCategoriesDTO<iModelProductDTO>;
     function Tags : iModelTagsDTO<iModelProductDTO>;
     function Images : iModelImagesDTO<iModelProductDTO>;
