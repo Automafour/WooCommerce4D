@@ -36,6 +36,7 @@ type
       function PaymentMethodTitle(Value: String): iModelOrdersDTO;
       function TransactionId(Value: String): iModelOrdersDTO;
       function CorreiosTrackingCode(Value: string): iModelOrdersDTO;
+      function TrackingURL(Value : String) : iModelOrdersDTO; //Custom field proprio
       function MetaData: iModelMetaDataDTO<iModelOrdersDTO>;
       function LineItems: iModelLinesItemsDTO<iModelOrdersDTO>;
       function ShippingLines: iModelShippingLinesDTO<iModelOrdersDTO>;
@@ -155,6 +156,12 @@ function TModelOrdersDTO.Status(Value: TStatusType): iModelOrdersDTO;
 begin
   Result := Self;
   FJson.AddPair('status',Value.GetValue);
+end;
+
+function TModelOrdersDTO.TrackingURL(Value: String): iModelOrdersDTO;
+begin
+  Result := Self;
+  FJson.AddPair('tracking_url',Value);
 end;
 
 function TModelOrdersDTO.TransactionId(Value: String): iModelOrdersDTO;
