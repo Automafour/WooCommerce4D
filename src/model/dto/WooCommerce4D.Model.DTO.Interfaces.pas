@@ -210,6 +210,7 @@ type
     function PurchaseNote(Value : String) : iModelProductDTO;
     function TieredPricingType(Value: TTieredPricingType): iModelProductDTO;
     function TieredPricingFixedRules: iModelFixedTieredPriceDTO<iModelProductDTO>;
+    function TrackingURL(Value : String) : iModelProductDTO; //Custom field próprio
     function Categories : iModelCategoriesDTO<iModelProductDTO>;
     function Tags : iModelTagsDTO<iModelProductDTO>;
     function Images : iModelImagesDTO<iModelProductDTO>;
