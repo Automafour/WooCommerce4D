@@ -66,7 +66,6 @@ type
     function PurchaseNote(Value: String): iModelProductDTO;
     function TieredPricingType(Value: TTieredPricingType): iModelProductDTO;
     function TieredPricingFixedRules: iModelFixedTieredPriceDTO<iModelProductDTO>;
-    function TrackingURL(Value : String) : iModelProductDTO;
     function Categories: iModelCategoriesDTO<iModelProductDTO>;
     function Tags: iModelTagsDTO<iModelProductDTO>;
     function Images: iModelImagesDTO<iModelProductDTO>;
@@ -360,12 +359,6 @@ function TModelProductDTO.TieredPricingType(
 begin
   Result := Self;
   FJSON.AddPair('tiered_pricing_type', Value.GetValue);
-end;
-
-function TModelProductDTO.TrackingURL(Value: String): iModelProductDTO;
-begin
-  Result := Self;
-  FJSON.AddPair('tracking_url', Value);
 end;
 
 function TModelProductDTO.UpsellIds(Value: String): iModelProductDTO;
