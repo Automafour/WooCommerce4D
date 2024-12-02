@@ -105,6 +105,7 @@ type
     function PaymentMethodTitle(Value: String): iModelOrdersDTO;
     function TransactionId(Value: String): iModelOrdersDTO;
     function CorreiosTrackingCode(Value: string): iModelOrdersDTO;
+    function CarryingName(Value : String) : iModelOrdersDTO; //Custom field proprio
     function TrackingURL(Value : String) : iModelOrdersDTO; //Custom field proprio
     function MetaData: iModelMetaDataDTO<iModelOrdersDTO>;
     function LineItems: iModelLinesItemsDTO<iModelOrdersDTO>;
