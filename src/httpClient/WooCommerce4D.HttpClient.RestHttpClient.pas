@@ -275,7 +275,7 @@ var
 begin
   Result := 1;
   for I := 0 to Pred(FRestResponse.Headers.Count) do
-    if FRestResponse.Headers.KeyNames[i] = 'x-wp-totalpages' then
+    if Lowercase(FRestResponse.Headers.KeyNames[i]) = 'x-wp-totalpages' then
     begin
       Result := StrToIntDef(FRestResponse.Headers.ValueFromIndex[i],0);
       Exit;
