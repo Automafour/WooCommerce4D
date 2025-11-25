@@ -16,7 +16,8 @@ type
     function Put(Url : String) : ihttpClient;
     function Delete(Url : String)  : ihttpClient;
     function Params(aKey: String; aValue : String) : ihttpClient;
-    function Body(Value : iEntity) : ihttpClient;
+    function Body(Value : iEntity) : ihttpClient; Overload;
+    function Body(Value : string) : ihttpClient; Overload;
     function DataSet(Value : TDataSet) : ihttpClient;
     function Content : String;
     function StatusCode: integer;
@@ -26,6 +27,7 @@ type
   iWooCommerce = interface
     function _Create(endpointBase : TEndpointBaseType) : iWooCommerce; overload;
     function _Create(endpointBase : String) : iWooCommerce; overload;
+    function _CreateCustomRoute(ABody, AEndPoint: string): iWooCommerce;
     function Get(endpointBase: TEndpointBaseType; Id: Integer): iWooCommerce; Overload;
     function Get(endpointBase: string; Id: Integer): iWooCommerce; Overload;
     function GetAll(endpointBase: TEndpointBaseType): iWooCommerce; Overload;

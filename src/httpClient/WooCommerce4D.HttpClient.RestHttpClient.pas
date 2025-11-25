@@ -14,39 +14,43 @@ uses
   Data.DB,
   DataSet.Serialize,
   System.Generics.Collections,
-  SysUtils, WooCommerce4D.Types;
+  SysUtils,
+  WooCommerce4D.Types;
 
 type
   TRestHttpClient = class(TInterfacedObject, iHttpClient)
-    private
-      FRestClient: TRESTClient;
-      FRestRequest: TRESTRequest;
-      FRestResponse: TRESTResponse;
-      FAuthenticator : TCustomAuthenticator;
+  private
+    FRestClient: TRESTClient;
+    FRestRequest: TRESTRequest;
+    FRestResponse: TRESTResponse;
+    FAuthenticator: TCustomAuthenticator;
 
-      FListaParams : TDictionary<String,String>;
-      FBody : String;
-    public
-      constructor Create;
-      destructor Destroy; override;
-      class function New : iHttpClient;
-      function Authentication(aAuthType: TAuthType; aUserName, aPassword : String) : ihttpClient;
-      function Get(Url : String) : ihttpClient;
-      function GetAll(Url : String) : ihttpClient;
-      function Post(Url : String) : ihttpClient;
-      function Put(Url : String) : ihttpClient;
-      function Delete(Url : String)  : ihttpClient;
-      function Params(aKey: String; aValue : String) : ihttpClient;
-      function Body(Value : iEntity) : ihttpClient;
-      function DataSet(Value : TDataSet) : ihttpClient;
-      function Content : String;
-      function StatusCode: integer;
-      function TotalPaginas: integer;
+    FListaParams: TDictionary<String, String>;
+    FBody: String;
+  public
+    constructor Create;
+    destructor Destroy; override;
+    class function New: iHttpClient;
+    function Authentication(aAuthType: TAuthType; aUserName, aPassword: String)
+      : iHttpClient;
+    function Get(Url: String): iHttpClient;
+    function GetAll(Url: String): iHttpClient;
+    function Post(Url: String): iHttpClient;
+    function Put(Url: String): iHttpClient;
+    function Delete(Url: String): iHttpClient;
+    function Params(aKey: String; aValue: String): iHttpClient;
+    function Body(Value: iEntity): iHttpClient; Overload;
+    function Body(Value: string): iHttpClient; Overload;
+    function DataSet(Value: TDataSet): iHttpClient;
+    function Content: String;
+    function StatusCode: integer;
+    function TotalPaginas: integer;
   end;
 
 implementation
 
-function TRestHttpClient.Authentication(aAuthType: TAuthType; aUserName, aPassword : String) : ihttpClient;
+function TRestHttpClient.Authentication(aAuthType: TAuthType;
+  aUserName, aPassword: String): iHttpClient;
 var
   LSignatureMethod: TOAuth1SignatureMethod;
 begin
@@ -63,10 +67,16 @@ begin
   end;
 end;
 
-function TRestHttpClient.Body(Value: iEntity): ihttpClient;
+function TRestHttpClient.Body(Value: iEntity): iHttpClient;
 begin
   Result := Self;
   FBody := Value.Content;
+end;
+
+function TRestHttpClient.Body(Value: string): iHttpClient;
+begin
+  Result := Self;
+  FBody := Value;
 end;
 
 function TRestHttpClient.Content: String;
@@ -76,19 +86,19 @@ end;
 
 constructor TRestHttpClient.Create;
 begin
-  FListaParams := TDictionary<String,String>.Create;
+  FListaParams := TDictionary<String, String>.Create;
 end;
 
-function TRestHttpClient.DataSet(Value: TDataSet): ihttpClient;
+function TRestHttpClient.DataSet(Value: TDataSet): iHttpClient;
 begin
   Result := Self;
   Value.LoadFromJSON(FRestResponse.Content);
 end;
 
-function TRestHttpClient.Delete(Url: String): ihttpClient;
+function TRestHttpClient.Delete(Url: String): iHttpClient;
 begin
   Result := Self;
-  FRestClient.BaseURL := url;
+  FRestClient.BaseURL := Url;
 end;
 
 destructor TRestHttpClient.Destroy;
@@ -101,12 +111,11 @@ begin
   inherited;
 end;
 
-function TRestHttpClient.Get(Url: String): ihttpClient;
+function TRestHttpClient.Get(Url: String): iHttpClient;
 begin
-  Result := self;
+  Result := Self;
   FRestClient := TRESTClient.Create(Url);
-  FRestClient.Accept :=
-    'application/json, text/plain; q=0.9, text/html;q=0.8,';
+  FRestClient.Accept := 'application/json, text/plain; q=0.9, text/html;q=0.8,';
   FRestClient.AcceptCharset := 'UTF-8, *;q=0.8';
   FRestClient.AcceptEncoding := '';
   FRestClient.AutoCreateParams := true;
@@ -134,15 +143,14 @@ begin
   FRestRequest.Execute;
 end;
 
-function TRestHttpClient.GetAll(Url: String): ihttpClient;
+function TRestHttpClient.GetAll(Url: String): iHttpClient;
 var
-  key : String;
-  I : integer;
+  key: String;
+  I: integer;
 begin
-  result := Self;
+  Result := Self;
   FRestClient := TRESTClient.Create(Url);
-  FRestClient.Accept :=
-    'application/json, text/plain; q=0.9, text/html;q=0.8,';
+  FRestClient.Accept := 'application/json, text/plain; q=0.9, text/html;q=0.8,';
   FRestClient.AcceptCharset := 'UTF-8, *;q=0.8';
   FRestClient.AcceptEncoding := '';
   FRestClient.AutoCreateParams := true;
@@ -166,29 +174,28 @@ begin
   FRestRequest.Method := rmGET;
   FRestRequest.SynchronizedEvents := False;
   FRestRequest.Response := FRestResponse;
-  for Key in FListaParams.Keys do
-    FRestRequest.Params.AddItem(key,FListaParams.Items[key]);
+  for key in FListaParams.Keys do
+    FRestRequest.Params.AddItem(key, FListaParams.Items[key]);
 
   FRestRequest.Execute;
 end;
 
-class function TRestHttpClient.New : iHttpClient;
+class function TRestHttpClient.New: iHttpClient;
 begin
   Result := Self.Create;
 end;
 
-function TRestHttpClient.Params(aKey: String; aValue : String) : ihttpClient;
+function TRestHttpClient.Params(aKey: String; aValue: String): iHttpClient;
 begin
-  result:=self;
-  FListaParams.Add(akey, aValue);
+  Result := Self;
+  FListaParams.Add(aKey, aValue);
 end;
 
-function TRestHttpClient.Post(Url: String): ihttpClient;
+function TRestHttpClient.Post(Url: String): iHttpClient;
 begin
-  result :=self;
+  Result := Self;
   FRestClient := TRESTClient.Create(Url);
-  FRestClient.Accept :=
-    'application/json, text/plain; q=0.9, text/html;q=0.8,';
+  FRestClient.Accept := 'application/json, text/plain; q=0.9, text/html;q=0.8,';
   FRestClient.AcceptCharset := 'UTF-8, *;q=0.8';
   FRestClient.AcceptEncoding := '';
   FRestClient.AutoCreateParams := true;
@@ -223,12 +230,11 @@ begin
   FRestRequest.Execute;
 end;
 
-function TRestHttpClient.Put(Url: String): ihttpClient;
+function TRestHttpClient.Put(Url: String): iHttpClient;
 begin
-  result :=self;
+  Result := Self;
   FRestClient := TRESTClient.Create(Url);
-  FRestClient.Accept :=
-    'application/json, text/plain; q=0.9, text/html;q=0.8,';
+  FRestClient.Accept := 'application/json, text/plain; q=0.9, text/html;q=0.8,';
   FRestClient.AcceptCharset := 'UTF-8, *;q=0.8';
   FRestClient.AcceptEncoding := '';
   FRestClient.AutoCreateParams := true;
@@ -270,14 +276,14 @@ end;
 
 function TRestHttpClient.TotalPaginas: integer;
 var
-  i: integer;
+  I: integer;
   LHeader: string;
 begin
   Result := 1;
   for I := 0 to Pred(FRestResponse.Headers.Count) do
-    if Lowercase(FRestResponse.Headers.KeyNames[i]) = 'x-wp-totalpages' then
+    if Lowercase(FRestResponse.Headers.KeyNames[I]) = 'x-wp-totalpages' then
     begin
-      Result := StrToIntDef(FRestResponse.Headers.ValueFromIndex[i],0);
+      Result := StrToIntDef(FRestResponse.Headers.ValueFromIndex[I], 0);
       Exit;
     end;
 end;

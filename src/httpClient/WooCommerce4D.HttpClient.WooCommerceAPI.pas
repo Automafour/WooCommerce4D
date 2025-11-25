@@ -22,16 +22,19 @@ type
     FUrl: String;
 
   const
+    API_CUSTOM_URL = '%s/wp-json/%s';
     API_URL_FORMAT = '%s/wp-json/wc/%s/%s';
     API_URL_BATCH_FORMAT = '%s/wp-json/wc/%s/%s/batch';
     API_URL_ONE_ENTITY_FORMAT = '%s/wp-json/wc/%s/%s/%d';
     URL_SECURED_FORMAT = '%s?%s';
+
   public
     constructor Create(Parent: iOAuthConfig);
     destructor Destroy; override;
     class function New(Parent: iOAuthConfig): iWooCommerce;
     function _Create(endpointBase: TEndpointBaseType): iWooCommerce; overload;
     function _Create(endpointBase: String): iWooCommerce; overload;
+    function _CreateCustomRoute(ABody, AEndPoint: string): iWooCommerce;
     function Get(endpointBase: TEndpointBaseType; Id: Integer): iWooCommerce; Overload;
     function Get(endpointBase: string; Id: Integer): iWooCommerce; Overload;
     function GetAll(endpointBase: TEndpointBaseType): iWooCommerce; Overload;
@@ -159,6 +162,14 @@ begin
   Result := Self;
   FHttpClient.Put(Format(API_URL_ONE_ENTITY_FORMAT,
     [FParent.Url, FParent.Version, endpointBase, Id]));
+end;
+
+function TWooCommerceAPI._CreateCustomRoute(ABody, AEndPoint: string):
+  iWooCommerce;
+begin
+  Result := Self;
+  FHttpClient.Body(ABody);
+  FHttpClient.Post(Format(API_CUSTOM_URL, [FParent.Url, AEndPoint]));
 end;
 
 function TWooCommerceAPI.Batch(endpointBase: TEndpointBaseType): iWooCommerce;
