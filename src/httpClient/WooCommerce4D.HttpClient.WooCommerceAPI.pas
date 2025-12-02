@@ -168,6 +168,7 @@ function TWooCommerceAPI._CreateCustomRoute(ABody, AEndPoint: string):
   iWooCommerce;
 begin
   Result := Self;
+  FHttpClient.Authentication(NO_AUTH,'','');
   FHttpClient.Body(ABody);
   FHttpClient.Post(Format(API_CUSTOM_URL, [FParent.Url, AEndPoint]));
 end;

@@ -64,6 +64,11 @@ begin
         TOAuth1Authenticator(FAuthenticator).ConsumerKey := aUserName;
         TOAuth1Authenticator(FAuthenticator).ConsumerSecret := aPassword;
       end;
+    NO_AUTH:
+      begin
+        if Assigned(FAuthenticator) then
+          FreeAndNil(FAuthenticator);
+      end;
   end;
 end;
 
@@ -107,7 +112,8 @@ begin
   FRestRequest.Free;
   FRestResponse.Free;
   FRestClient.Free;
-  FAuthenticator.Free;
+  if Assigned(FAuthenticator) then
+    FAuthenticator.Free;
   inherited;
 end;
 
