@@ -220,6 +220,7 @@ type
     function GroupedProducts(Value : String) : iModelProductDTO;
     function MenuOrder(Value : integer) : iModelProductDTO;
     function MetaData : iModelMetaDataDTO<iModelProductDTO>;
+    function SaleRemove: iModelProductDTO;
     function &End: iEntity;
   end;
 

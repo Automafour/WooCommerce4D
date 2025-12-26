@@ -4,7 +4,8 @@ interface
 
 uses
   JSON,
-  DateUtils,
+  System.DateUtils,
+  System.SysUtils,
   WooCommerce4D.Model.DTO.Interfaces,
   WooCommerce4D.Types,
   WooCommerce4D.Model.DTO.MetaData,
@@ -74,6 +75,7 @@ type
     function GroupedProducts(Value: String): iModelProductDTO;
     function MenuOrder(Value: Integer): iModelProductDTO;
     function MetaData: iModelMetaDataDTO<iModelProductDTO>;
+    function SaleRemove: iModelProductDTO;
     function &End: iEntity;
   end;
 
@@ -282,6 +284,14 @@ function TModelProductDTO.SalePrice(Value: string): iModelProductDTO;
 begin
   Result := Self;
   FJSON.AddPair('sale_price', value);
+end;
+
+function TModelProductDTO.SaleRemove: iModelProductDTO;
+begin
+  Result := Self;
+  FJSON.AddPair('date_on_sale_from', EmptyStr);
+  FJSON.AddPair('date_on_sale_to', EmptyStr);
+  FJSON.AddPair('sale_price', EmptyStr);
 end;
 
 function TModelProductDTO.ShippingClass(Value: Boolean): iModelProductDTO;
